@@ -1,0 +1,88 @@
+# File Handling
+
+<badges>[![version](https://img.shields.io/pypi/v/filehandling.svg)](https://pypi.org/project/filehandling/)
+[![license](https://img.shields.io/pypi/l/filehandling.svg)](https://pypi.org/project/filehandling/)
+[![pyversions](https://img.shields.io/pypi/pyversions/filehandling.svg)](https://pypi.org/project/filehandling/)  
+[![donate](https://img.shields.io/badge/Donate-Paypal-0070ba.svg)](https://paypal.me/foxe6)
+[![powered](https://img.shields.io/badge/Powered%20by-UTF8-red.svg)](https://paypal.me/foxe6)
+[![made](https://img.shields.io/badge/Made%20with-PyCharm-red.svg)](https://paypal.me/foxe6)
+</badges>
+
+<i>Cross-platform file handling utilities.</i>
+
+# Hierarchy
+```
+filehandling
+|---- path
+|   |---- temp_dir()
+|   |---- abs_cwd()
+|   |---- abs_dir()
+|   '---- join_path()
+'---- file
+    |---- read()
+    |---- write()
+    '---- Writer()
+        '---- write()
+```
+
+# Example
+
+## python
+```python
+from filehandling import *
+
+# absolute current working directory
+print(abs_cwd())
+# specify an inspect stack depth
+print(abs_cwd(depth=2))
+
+# absolute directory of somefile
+print(abs_dir("somefile"))
+
+# join path and normalize it
+print(join_path(abs_cwd(), "..", "somefile"))
+
+# temporary directory of a bundled python application
+print(temp_dir())
+
+# read file content with automatic encoding detection
+print(read("somefile"))
+# specify an encoding
+print(read("somefile", "ascii"))
+
+# write content to file with attempts to use file queue
+write("somefile", "a", "test\n")  # fallback to open()
+write("somefile", "wb", b"test\n")  # fallback to open()
+
+# Writer file queue
+writer = Writer(server=True)
+ss = SS(functions=writer.functions)
+ss_thread = threading.Thread(target=ss.start)
+ss_thread.daemon = True
+ss_thread.start()
+# use the writer
+writer.write("somefile", "a", "test\n")
+# use file queue
+write("somefile", "wb", b"test\n")
+```
+
+## shell
+```shell script
+rem filehandling.exe <function name> [argument] ...
+filehandling.exe abs_cwd
+filehandling.exe abs_cwd 2
+filehandling.exe abs_dir somefile
+filehandling.exe join_path C:\test .. somefile
+filehandling.exe read C:\somefile
+filehandling.exe read C:\somefile ascii
+filehandling.exe write C:\somefile w test1234
+filehandling.exe write C:\somefile a test1234
+rem the followings will fail to execute
+filehandling.exe temp_dir
+filehandling.exe read somefile
+filehandling.exe read somefile ascii
+filehandling.exe write somefile w test1234
+filehandling.exe write somefile a test1234
+filehandling.exe write C:\somefile wb test1234
+filehandling.exe write C:\somefile ab test1234
+```
