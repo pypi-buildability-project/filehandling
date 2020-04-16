@@ -2,7 +2,7 @@ import queue
 import traceback
 import threading
 from .path import *
-from encryptedsocket import SS, SC
+from encryptedsocket import SC
 from omnitools import str_or_bytes, utf8d, charenc, p
 
 

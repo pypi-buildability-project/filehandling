@@ -65,24 +65,3 @@ writer.write("somefile", "a", "test\n")
 # use file queue
 write("somefile", "wb", b"test\n")
 ```
-
-## shell
-```shell script
-rem filehandling.exe <function name> [argument] ...
-filehandling.exe abs_cwd
-filehandling.exe abs_cwd 2
-filehandling.exe abs_dir somefile
-filehandling.exe join_path C:\test .. somefile
-filehandling.exe read C:\somefile
-filehandling.exe read C:\somefile ascii
-filehandling.exe write C:\somefile w test1234
-filehandling.exe write C:\somefile a test1234
-rem the followings will fail to execute
-filehandling.exe temp_dir
-filehandling.exe read somefile
-filehandling.exe read somefile ascii
-filehandling.exe write somefile w test1234
-filehandling.exe write somefile a test1234
-filehandling.exe write C:\somefile wb test1234
-filehandling.exe write C:\somefile ab test1234
-```
