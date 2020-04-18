@@ -55,6 +55,7 @@ write("somefile", "a", "test\n")  # fallback to open()
 write("somefile", "wb", b"test\n")  # fallback to open()
 
 # Writer file queue
+from encryptedsocket import SS
 writer = Writer(server=True)
 ss = SS(functions=writer.functions)
 ss_thread = threading.Thread(target=ss.start)

@@ -3,7 +3,7 @@ import traceback
 import threading
 from .path import *
 from encryptedsocket import SC
-from omnitools import str_or_bytes, utf8d, charenc, p
+from omnitools import str_or_bytes, utf8d, charenc, p, args
 
 
 __ALL__ = ["read", "write", "Writer"]
@@ -58,12 +58,15 @@ class Writer(object):
         self.fileq_worker = None
         self.functions = None
         self.is_server = server
+        self.sc = None
         if self.is_server:
             self.fileq = queue.Queue()
             self.fileq_worker = threading.Thread(target=self.worker)
             self.fileq_worker.daemon = True
             self.fileq_worker.start()
-            self.functions = dict(write=lambda args: self.fileq.put(args))
+            self.functions = dict(write=lambda _args: self.fileq.put(_args))
+        else:
+            self.sc = SC()
 
     def write(self, file_path: str, mode: str, content: str_or_bytes) -> bool:
         if not os.path.isabs(file_path):
@@ -74,11 +77,11 @@ class Writer(object):
             raise Exception(f"mode {mode} cannot write bytes")
         if mode in ("wb", "ab") and isinstance(content, str):
             raise Exception(f"mode {mode} cannot write str")
-        args = (file_path, mode, content)
+        _args = (file_path, mode, content)
         if self.is_server:
-            self.fileq.put(args)
+            self.fileq.put(_args)
         else:
-            SC().request("write", args)
+            self.sc.request(command="write", data=args(_args))
         return True
 
 
